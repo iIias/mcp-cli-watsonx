@@ -2,7 +2,12 @@
 from mcp_cli.llm.providers.base import BaseLLMClient
 
 def get_llm_client(provider="openai", model="gpt-4o-mini", api_key=None) -> BaseLLMClient:
-    if provider == "openai":
+    if provider == "watsonx":
+        # import
+        from mcp_cli.llm.providers.watsonx_client import WatsonxLLMClient
+
+        return WatsonxLLMClient(model=model)
+    elif provider == "openai":
         # import
         from mcp_cli.llm.providers.openai_client import OpenAILLMClient
 
