@@ -13,7 +13,6 @@ from ibm_watsonx_ai.foundation_models import ModelInference
 from mcp_cli.llm.providers.base import BaseLLMClient
 
 # utils
-from mcp_cli.llm.tools_handler import parse_tool_response
 
 # Load environment variables
 load_dotenv()
@@ -36,52 +35,21 @@ class WatsonxLLMClient(BaseLLMClient):
             project_id=self.project_id,
         )
 
-    def create_completion(
-        self,
-        messages: List[Dict[str, Any]],
-        tools: Optional[List[Dict[str, Any]]] = None,
-    ) -> Dict[str, Any]:
+    def create_completion(self, messages: List[Dict], tools: List = None) -> Dict[str, Any]:
         try:
 
             # Call chat() with tool support
-            response = self.client.achat(
+            response = self.client.chat(
                 messages=messages,
                 tools=tools,
-                tool_choice_option="auto"
+                #tool_choice_option="auto"
             )
-
-            message = response.get("choices", [{}])[0].get("message", {})
-            tool_calls = message.get("tool_calls", [])
-            content = message.get("content", "")
-
-            # Convert tool_calls to standardized format
-            parsed_tool_calls = []
-            for tool in tool_calls:
-                tool_call_id = tool.get("id", f"call_{uuid.uuid4().hex[:8]}")
-                function = tool.get("function", {})
-                name = function.get("name")
-                arguments = function.get("arguments", {})
-
-                if isinstance(arguments, str):
-                    try:
-                        arguments = json.loads(arguments)
-                    except json.JSONDecodeError:
-                        pass  # Leave as string if parsing fails
-
-                parsed_tool_calls.append({
-                    "id": tool_call_id,
-                    "type": "function",
-                    "function": {
-                        "name": name,
-                        "arguments": json.dumps(arguments),
-                    },
-                })
-
-                print(f"Tool Calls: {parsed_tool_calls}")
-
+            
+            print(response)
+            
             return {
-                "response": "" if parsed_tool_calls else content,
-                "tool_calls": parsed_tool_calls,
+                "response": response['choices'][0]['message']['content'] if "content" in response['choices'][0]['message'] else "",
+                "tool_calls": response['choices'][0]['message']["tool_calls"] if "tool_calls" in response['choices'][0]['message'] else [],
             }
 
         except Exception as e:
