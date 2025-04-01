@@ -14,6 +14,11 @@ class SystemPromptGenerator:
         In this environment you have access to a set of tools you can use to answer the user's question.
         {{ FORMATTING INSTRUCTIONS }}
         String and scalar parameters should be specified as is, while lists and objects should use JSON format. Note that spaces for string values are not stripped. The output is not expected to be valid XML and is parsed with regular expressions.
+        To call a tool, respond using this exact format:
+        <function=function_name>{"arg1": "value1", ...}</function>
+        Example:
+        <function=read_query>{"query": "SELECT COUNT(*) FROM products"}</function>
+        Do NOT describe the tool or explain what you will do. Just output the function call using the format above.
         Here are the functions available in JSONSchema format:
         {{ TOOL DEFINITIONS IN JSON SCHEMA }}
         {{ USER SYSTEM PROMPT }}
