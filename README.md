@@ -31,10 +31,11 @@ pip install -e ".[cli,dev]"
 mv .env.example .env
 ```
 
-4. Open .env and add your credentials
+4. Open .env
 ```bash
 vim .env
 ```
+...and add your credentials
 
 ```bash
 WATSONX_ENDPOINT_URL= # (e.g., https://eu-de.ml.cloud.ibm.com)
