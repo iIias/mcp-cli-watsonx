@@ -4,21 +4,24 @@
         "command": "uvx",
         "args": ["mcp-server-sqlite", "--db-path", "test.db"]
       },
-      "code-sandbox": {
-        "command": "uv",
-        "args": ["--directory", "/Users/christopherhay/chris-source/mcp-servers/mcp-code-sandbox/", "run", "src/main.py"]
-      },
-      "filesystem": {
-        "command": "npx",
+      "time": {
+        "command": "uvx",
         "args": [
-          "-y",
-          "@modelcontextprotocol/server-filesystem",
-          "/Users/christopherhay/chris-source/chuk-test-code/fibonacci"
+          "mcp-server-time",
+          "--local-timezone=America/New_York"
         ]
       },
+      "filesystem": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@modelcontextprotocol/server-filesystem",
+              "/Users/ennmouri/mcp-playground"
+            ]
+          },  
       "generic": {
         "command": "uv",
-        "args": ["--directory", "/Users/christopherhay/chris-source/agent-x/mcp-host", "run", "runtime/src/mcp_server/main.py"]
+        "args": ["--directory", "/Users/ennmouri/github/mcp-host", "run", "runtime/src/mcp_server/main.py"]
       }
     }
   }
