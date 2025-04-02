@@ -42,11 +42,9 @@ class WatsonxLLMClient(BaseLLMClient):
             response = self.client.chat(
                 messages=messages,
                 tools=tools,
-                #tool_choice_option="auto"
+                tool_choice_option="auto"
             )
-            
-            print(response)
-            
+                        
             return {
                 "response": response['choices'][0]['message']['content'] if "content" in response['choices'][0]['message'] else "",
                 "tool_calls": response['choices'][0]['message']["tool_calls"] if "tool_calls" in response['choices'][0]['message'] else [],
