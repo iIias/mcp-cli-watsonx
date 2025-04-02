@@ -26,7 +26,7 @@ def display_welcome_banner(context, console=None, show_tools_info=True):
     
     # Create the panel content with explicit styling
     welcome_text = "Welcome to MCP CLI Chat!\n\n"
-    provider_line = f"[{TEXT_DEEMPHASIS}]Provider: {provider} |  Model: {model}[/{TEXT_DEEMPHASIS}]\n\n"
+    provider_line = f"[{TEXT_DEEMPHASIS}]Provider: [bold #054ADA]{provider}[/bold #054ADA] |  Model: [#054ADA]{model}[/#054ADA][/{TEXT_DEEMPHASIS}]\n\n"
     exit_line = f"Type [{TEXT_EMPHASIS}]'exit'[/{TEXT_EMPHASIS}] to quit."
     
     # Combine the content with proper styling
@@ -35,7 +35,7 @@ def display_welcome_banner(context, console=None, show_tools_info=True):
     # Print welcome banner with current model info
     console.print(Panel(
         panel_content,
-        title="Welcome to MCP CLI Chat",
+        title="mcp-cli Chat",
         title_align="center",
         expand=True,
         border_style=BORDER_PRIMARY
