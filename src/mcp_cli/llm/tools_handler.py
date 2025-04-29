@@ -188,12 +188,14 @@ async def fetch_tools(read_stream: Any, write_stream: Any) -> Optional[List[Dict
 
 def convert_to_openai_tools(tools: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Convert tools into OpenAI-compatible function definitions."""
+    
     return [
         {
             "type": "function",
             "function": {
                 "name": tool["name"],
                 "parameters": tool.get("inputSchema", {}),
+                "description": tool.get("description", "No description provided"),
             },
         }
         for tool in tools
