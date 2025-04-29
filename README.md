@@ -97,6 +97,7 @@ This CLI is built on top of the protocol library, focusing on providing a rich u
 - **Multi-Provider Support**:
   - watsonx.ai integration (`ibm/granite-3-8b-instruct`, `mistralai/mistral-large`, etc.)
   - OpenAI integration (`gpt-4o-mini`, `gpt-4o`, `gpt-4-turbo`, etc.)
+  - watsonx.ai integration (`ibm/granite-3-8b-instruct`, `mistralai/mistral-large`, etc.)
   - Ollama integration (`llama3.2`, `qwen2.5-coder`, etc.)
   - Extensible architecture for additional providers
 
@@ -129,6 +130,7 @@ This CLI is built on top of the protocol library, focusing on providing a rich u
 - Python 3.11 or higher
 - For watsonx.ai: Valid API key, project ID, and endpoint URL
 - For OpenAI: Valid API key in `OPENAI_API_KEY` environment variable
+- For watsonx.ai: Valid API key (`WATSONX_API_KEY`), valid project ID (`WATSONX_PROJECT_ID`), endpoint URL (`WATSONX_ENDPOINT_URL`)
 - For Ollama: Local Ollama installation
 - Server configuration file (default: `server_config.json`)
 - [CHUK-MCP](https://github.com/chrishayuk/chuk-mcp) protocol library
@@ -393,7 +395,9 @@ src/
 │   │   ├── providers/         # Provider-specific clients
 │   │   │   ├── __init__.py
 │   │   │   ├── base.py        # Base LLM client
-│   │   │   └── openai_client.py  # OpenAI implementation
+│   │   │   ├── openai_client.py  # OpenAI implementation
+│   │   │   ├── ollama_client.py  # ollama implementation
+│   │   │   └── watsonx_client.py # watsonx.ai implementation
 │   │   ├── llm_client.py      # Client factory
 │   │   ├── system_prompt_generator.py  # Prompt generator
 │   │   └── tools_handler.py   # Tools handling
