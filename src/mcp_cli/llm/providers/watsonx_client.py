@@ -12,6 +12,7 @@ from ibm_watsonx_ai.foundation_models import ModelInference
 # base
 from mcp_cli.llm.providers.base import BaseLLMClient
 
+
 # Load environment variables
 load_dotenv()
 
@@ -25,6 +26,7 @@ class WatsonxLLMClient(BaseLLMClient):
 
         if not all([self.project_id, api_key, endpoint]):
             raise ValueError("Missing watsonx credentials in .env")
+
 
         credentials = Credentials(url=endpoint, api_key=api_key)
         self.client = ModelInference(
@@ -42,7 +44,7 @@ class WatsonxLLMClient(BaseLLMClient):
                 tools=tools,
                 tool_choice_option="auto"
             )
- 
+
             return {
                 "response": response['choices'][0]['message']['content'] if "content" in response['choices'][0]['message'] else "",
                 "tool_calls": response['choices'][0]['message']["tool_calls"] if "tool_calls" in response['choices'][0]['message'] else [],
@@ -50,4 +52,6 @@ class WatsonxLLMClient(BaseLLMClient):
 
         except Exception as e:
             logging.exception("Watsonx API Error")
+
             raise ValueError(f"Watsonx API Error: {e}")
+

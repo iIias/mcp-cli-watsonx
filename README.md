@@ -1,6 +1,84 @@
 # MCP CLI - Model Context Provider Command Line Interface
 A powerful, feature-rich command-line interface for interacting with Model Context Provider servers. This client enables seamless communication with LLMs through integration with the [CHUK-MCP protocol library](https://github.com/chrishayuk/chuk-mcp) which is a pyodide compatible pure python protocol implementation of MCP, supporting tool usage, conversation management, and multiple operational modes.
 
+## 🧠 For watsonx.ai Users (Quickstart ~10min)
+
+If you're using IBM watsonx.ai with MCP CLI, follow these steps to get started quickly:
+
+### ✅ Prerequisites
+- Python 3.11+
+- watsonx.ai credentials (endpoint_url, api_key, and project ID)
+- SQLite database or other MCP-compatible server
+
+
+### 🛠️ 1. Clone and set-up 
+
+Clone the repository:
+
+```bash
+git clone https://github.com/iiias/mcp-cli-watsonx
+cd mcp-cli-watsonx
+```
+
+2. Install the package with development dependencies:
+
+```bash
+pip install -e ".[cli,dev]"
+```
+
+3. Rename .env.example to .env
+```bash
+mv .env.example .env
+```
+
+4. Open .env
+```bash
+vim .env
+```
+...and add your credentials
+
+```bash
+WATSONX_ENDPOINT_URL= # (e.g., https://eu-de.ml.cloud.ibm.com)
+WATSONX_API_KEY= 
+WATSONX_PROJECT_ID=
+```
+
+### 🧹 2. (Optional) Add more MCP servers
+
+In your `server_config.json` you will find your MCP server for `sqlite3`.
+
+If you want to add more:
+
+```json
+  {
+    "mcpServers": {
+      "sqlite": {
+        "command": "uvx",
+        "args": ["mcp-server-sqlite", "--db-path", "test.db"]
+      },
+      "slack": {
+        ... # See server-specific documentation
+      },
+    }
+  }
+```
+
+**See more [examples](https://modelcontextprotocol.io/examples) for MCP Servers in the official documentation.**
+
+**🚀 Learn how to install more servers [here](https://modelcontextprotocol.io/examples#getting-started).**
+
+### 💬 3. Start Chat with watsonx.ai as provider
+
+```bash
+mcp-cli chat --server sqlite --provider watsonx --model mistralai/mistral-large
+```
+
+The client can now:
+- Receive structured tool definitions
+- Automatically call tools (e.g. `read_query`, `list_tables`)
+- Return real data (not hallucinations)
+
+
 ## 🔄 Protocol Implementation
 
 The core protocol implementation has been moved to a separate package at:
@@ -17,6 +95,7 @@ This CLI is built on top of the protocol library, focusing on providing a rich u
   - **Direct Commands**: Run individual commands without entering interactive mode
 
 - **Multi-Provider Support**:
+  - watsonx.ai integration (`ibm/granite-3-8b-instruct`, `mistralai/mistral-large`, etc.)
   - OpenAI integration (`gpt-4o-mini`, `gpt-4o`, `gpt-4-turbo`, etc.)
   - watsonx.ai integration (`ibm/granite-3-8b-instruct`, `mistralai/mistral-large`, etc.)
   - Ollama integration (`llama3.2`, `qwen2.5-coder`, etc.)
@@ -49,6 +128,7 @@ This CLI is built on top of the protocol library, focusing on providing a rich u
 ## 📋 Prerequisites
 
 - Python 3.11 or higher
+- For watsonx.ai: Valid API key, project ID, and endpoint URL
 - For OpenAI: Valid API key in `OPENAI_API_KEY` environment variable
 - For watsonx.ai: Valid API key (`WATSONX_API_KEY`), valid project ID (`WATSONX_PROJECT_ID`), endpoint URL (`WATSONX_ENDPOINT_URL`)
 - For Ollama: Local Ollama installation
@@ -99,7 +179,7 @@ Global options available for all commands:
 
 - `--server`: Specify the server(s) to connect to (comma-separated for multiple)
 - `--config-file`: Path to server configuration file (default: `server_config.json`)
-- `--provider`: LLM provider to use (`openai`, `watsonx` or `ollama`, default: `openai`)
+- `--provider`: LLM provider to use (`watsonx`, `openai` or `ollama`, default: `watsonx`)
 - `--model`: Specific model to use (provider-dependent defaults)
 - `--disable-filesystem`: Disable filesystem access (default: true)
 
@@ -114,7 +194,7 @@ mcp-cli chat --server sqlite
 With specific provider and model:
 
 ```bash
-mcp-cli chat --server sqlite --provider openai --model gpt-4o
+mcp-cli chat --server sqlite --provider watsonx --model mistralai/mistral-large
 ```
 
 ```bash
